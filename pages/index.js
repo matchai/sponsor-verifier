@@ -14,32 +14,32 @@ export default function Home() {
         ></link>
       </Head>
 
-      <main class="max-w-xl mx-auto text-center pt-24">
+      <main className="max-w-xl mx-auto text-center pt-24">
         <img
-          class="w-32 m-auto mb-4 rounded-full"
+          className="w-32 m-auto mb-4 rounded-full"
           src="https://github.com/matchai.png"
           alt="Matan Kushner (matchai)"
         />
-        <h1 class="text-3xl md:text-4xl">
+        <h1 className="text-3xl md:text-4xl">
           Thank you for sponsoring <a href="http://github.com/matchai">me</a>!
         </h1>
         {!session && (
           <>
-            <p class="text-lg mt-6 text-gray-600">
+            <p className="text-lg mt-6 text-gray-600">
               I am incredibly greatful for your support and would like to send
               you the occasional sticker pack for the projects I'm working on 💌
             </p>
 
-            <p class="text-sm mt-12 text-gray-500">
+            <p className="text-sm mt-12 text-gray-500">
               Sign in to confirm your sponsorship
             </p>
 
             <button
-              class="mt-3 rounded-lg px-4 md:px-5 xl:px-4 py-3 md:py-4 xl:py-3 bg-gray-900 hover:bg-gray-800 md:text-lg xl:text-base text-white font-semibold leading-tight shadow-md inline-flex items-center"
+              className="mt-3 rounded-lg px-4 md:px-5 xl:px-4 py-3 md:py-4 xl:py-3 bg-gray-900 hover:bg-gray-800 md:text-lg xl:text-base text-white font-semibold leading-tight shadow-md inline-flex items-center"
               onClick={() => signIn("github")}
             >
               <svg
-                class="fill-current w-4 h-4 mr-3"
+                className="fill-current w-4 h-4 mr-3"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
               >
