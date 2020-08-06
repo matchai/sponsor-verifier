@@ -12,7 +12,7 @@ const options = {
   callbacks: {
     session: async (session, user) => {
       // Add github_id to session token
-      session.github_id = user.github_id;
+      session.user.github_id = user.github_id;
       return Promise.resolve(session);
     },
     jwt: async (token, user, account, profile, isNewUser) => {

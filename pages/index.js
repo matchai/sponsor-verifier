@@ -1,8 +1,29 @@
 import Head from "next/head";
 import { signIn, signOut, useSession } from "next-auth/client";
+import { useRef } from "react";
+import useSWR, { mutate } from "swr";
 
 export default function Home() {
   const [session, loading] = useSession();
+  const { data: address } = useSWR(session ? "/api/address" : null);
+  const addressInput = useRef(null);
+
+  async function handleSubmitAddress() {
+    const newAddress = addressInput.current.value;
+    const body = { address: newAddress };
+
+    mutate("/api/address", body, false);
+
+    await fetch("/api/address", {
+      method: "PUT",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    mutate("/api/address");
+  }
 
   return (
     <>
@@ -14,28 +35,53 @@ export default function Home() {
         ></link>
       </Head>
 
-      <main className="max-w-xl mx-auto text-center pt-24">
-        <img
-          className="w-32 m-auto mb-4 rounded-full"
-          src="https://github.com/matchai.png"
-          alt="Matan Kushner (matchai)"
-        />
-        <h1 className="text-3xl md:text-4xl">
-          Thank you for sponsoring <a href="http://github.com/matchai">me</a>!
-        </h1>
-        {!session && (
-          <>
-            <p className="text-lg mt-6 text-gray-600">
-              I am incredibly greatful for your support and would like to send
-              you the occasional sticker pack for the projects I'm working on 💌
-            </p>
+      <main className="max-w-xl mx-auto pt-24">
+        <div className="text-center">
+          <a href="http://github.com/matchai">
+            <img
+              className="w-32 m-auto mb-4 inline rounded-full"
+              src="https://github.com/matchai.png"
+              alt="Matan Kushner (matchai)"
+            />
+          </a>
+          <h1 className="text-3xl md:text-4xl">Thank you for sponsoring me!</h1>
+          <p className="text-lg mt-6 mb-12 text-gray-600">
+            I am incredibly greatful for your support and would like to send you
+            the occasional sticker pack for the projects I'm working on 💌
+          </p>
+        </div>
 
-            <p className="text-sm mt-12 text-gray-500">
+        {loading && (
+          <svg
+            className="animate-spin m-auto h-6 w-6 text-gray-600"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>{" "}
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+        )}
+
+        {!loading && !session && (
+          <div className="text-center">
+            <p className="text-sm text-gray-500">
               Sign in to confirm your sponsorship
             </p>
 
             <button
-              className="mt-3 rounded-lg px-4 md:px-5 xl:px-4 py-3 md:py-4 xl:py-3 bg-gray-900 hover:bg-gray-800 md:text-lg xl:text-base text-white font-semibold leading-tight shadow-md inline-flex items-center"
+              className="mt-3 rounded px-4 md:px-5 xl:px-4 py-3 md:py-4 xl:py-3 bg-gray-900 hover:bg-gray-800 md:text-lg xl:text-base text-white font-semibold leading-tight shadow-md inline-flex items-center"
               onClick={() => signIn("github")}
             >
               <svg
@@ -47,13 +93,36 @@ export default function Home() {
               </svg>
               <span>Sign in with GitHub</span>
             </button>
-          </>
+          </div>
         )}
 
-        {session && (
+        {!loading && session && (
           <>
-            <input type="text" />
-            <button onClick={signOut}>Sign out</button>
+            <p className="text-md mb-2 text-gray-600">Full mailing address</p>
+            <textarea
+              className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal resize-none"
+              type="text"
+              rows="5"
+              defaultValue={address?.address}
+              ref={addressInput}
+              placeholder="Matan Kushner
+88 Colin P Kelly Jr St
+San Francisco, CA 94107
+United States"
+            />
+
+            <div className="flex items-center justify-between mt-5">
+              <button
+                className="rounded px-4 py-3 bg-teal-500 hover:bg-teal-600 text-white font-semibold leading-tight"
+                onClick={handleSubmitAddress}
+              >
+                Save address
+              </button>
+
+              <button className="text-gray-500" onClick={signOut}>
+                Sign out
+              </button>
+            </div>
           </>
         )}
       </main>
