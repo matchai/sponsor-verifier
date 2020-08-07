@@ -8,7 +8,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@fullhuman/postcss-purgecss": "^2.3.0",
     "airtable": "^0.9.0",
     "autoprefixer": "^9.8.6",
     "next": "9.5.1",
