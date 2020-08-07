@@ -15,10 +15,10 @@
     "postcss-import": "^12.0.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "swr": "^0.3.0",
+    "react-query": "^2.5.13",
     "tailwindcss": "^1.6.2"
   },
   "devDependencies": {
-    "typescript": "^3.9.7"
+    "@svgr/webpack": "^5.4.0"
   }
 }
