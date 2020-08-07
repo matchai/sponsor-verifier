@@ -14,12 +14,18 @@ function setAddress(address) {
   return fetch("/api/address", {
     method: "PUT",
     body: JSON.stringify({ address }),
+  }).then((res) => {
+    if (!res.ok) throw new Error("Failed to submit ");
+    return res;
   });
 }
 
 export function useSetAddress() {
   return useMutation(setAddress, {
     onSuccess() {
+      queryCache.invalidateQueries("address");
+    },
+    onError() {
       queryCache.invalidateQueries("address");
     },
   });
