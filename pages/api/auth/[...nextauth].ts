@@ -29,6 +29,7 @@ const options = {
       if (isSignIn) token.github_node_id = profile.node_id;
       return Promise.resolve(token);
     },
+    secret: process.env.NEXTAUTH_SECRET,
   },
 };
 
