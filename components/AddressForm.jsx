@@ -66,7 +66,7 @@ export default function AddressForm() {
     );
   }
 
-  if (sponsorAmount < 2) {
+  if (sponsorAmount < 5) {
     return (
       <div className="text-center leading-relaxed">
         <p className="leading-relaxed">
