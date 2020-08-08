@@ -20,7 +20,7 @@ const options = {
     jwt: async (token, user, account, profile, isNewUser) => {
       const isSignIn = user ? true : false;
       if (isSignIn) {
-        const sponsorAmount = await sponsorPrice(user.github_node_id);
+        const sponsorAmount = await sponsorPrice(profile.node_id);
         token.login = profile.login
         token.github_node_id = profile.node_id;
         token.sponsor_amount = sponsorAmount;
