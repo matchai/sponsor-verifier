@@ -1,7 +1,5 @@
 import { graphql } from "@octokit/graphql";
 
-const SPONSOR_PRICE_FOR_STICKERS = 5;
-
 export enum SponsorState {
   NotSponsor,
   SponsorBelowTier,
@@ -38,7 +36,7 @@ const sponsorListQuery = `
 }
 `;
 
-export async function checkSponsorship(githubNodeId) {
+export async function sponsorPrice(githubNodeId): Promise<number> {
   const response = (await graphqlWithAuth(sponsorListQuery)) as any;
   const sponsorList = response.viewer.sponsorshipsAsMaintainer.nodes;
   const matchingSponsor = sponsorList.find(
@@ -46,12 +44,8 @@ export async function checkSponsorship(githubNodeId) {
   );
 
   if (!matchingSponsor) {
-    return SponsorState.NotSponsor;
+    return 0
   }
 
-  const sponsorPrice = matchingSponsor.tier.monthlyPriceInDollars;
-  if (sponsorPrice < SPONSOR_PRICE_FOR_STICKERS) {
-    return SponsorState.SponsorBelowTier;
-  }
-  return SponsorState.SponsorMeetingTier;
+  return Number(matchingSponsor.tier.monthlyPriceInDollars);
 }

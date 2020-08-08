@@ -13,7 +13,7 @@ export default function Home() {
         ></link>
       </Head>
 
-      <main className="max-w-xl mx-auto pt-24">
+      <main className="max-w-2xl mx-auto pt-24 px-8">
         <Heading />
         <AddressForm />
       </main>

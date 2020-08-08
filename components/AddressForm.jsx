@@ -42,6 +42,52 @@ export default function AddressForm() {
     );
   }
 
+  const sponsorAmount = session.user.sponsor_amount;
+  if (sponsorAmount === 0) {
+    return (
+      <div className="text-center ">
+        <p className="leading-relaxed">
+          It looks like your account is not currently sponsoring{" "}
+          <span className="font-semibold">@matchai</span>
+          .<br />
+          You can do so over on{" "}
+          <a
+            className="font-semibold text-blue-600"
+            href="https://github.com/sponsors/matchai/"
+          >
+            this page
+          </a>
+          .
+        </p>
+        <button className="text-gray-500 mt-5" onClick={signOut}>
+          Sign out
+        </button>
+      </div>
+    );
+  }
+
+  if (sponsorAmount < 2) {
+    return (
+      <div className="text-center leading-relaxed">
+        <p className="leading-relaxed">
+          It looks like your account is not sponsored at the tier to recieve fun
+          stickers. <br />
+          You can increase your sponsorship level over on{" "}
+          <a
+            className="font-semibold text-blue-600"
+            href="https://github.com/sponsors/matchai/"
+          >
+            this page
+          </a>
+          .
+        </p>
+        <button className="text-gray-500 mt-5" onClick={signOut}>
+          Sign out
+        </button>
+      </div>
+    );
+  }
+
   return (
     <>
       <style jsx>{`
@@ -94,7 +140,8 @@ United States"
           </button>
           {isSuccess && (
             <div className="notice ml-3 inline-flex items-center font-semibold text-green-500">
-              <CheckCircle className="mr-1 w-5 h-5 text-green-500" /> {data.message}
+              <CheckCircle className="mr-1 w-5 h-5 text-green-500" />{" "}
+              {data.message}
             </div>
           )}
 

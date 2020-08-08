@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
-import { checkSponsorship, SponsorState } from "./github";
+import { sponsorPrice, SponsorState } from "./github";
 
 const options = {
   providers: [
@@ -12,21 +12,19 @@ const options = {
   ],
   callbacks: {
     session: async (session, user) => {
-      const tier = await checkSponsorship(user.github_node_id);
-      if (tier !== SponsorState.SponsorMeetingTier)
-        return Promise.reject(
-          new Error("Not meeing the required sponsor tier.")
-        );
-
-      // Add github_id to session token
+      session.user.login = user.login;
       session.user.github_node_id = user.github_node_id;
+      session.user.sponsor_amount = user.sponsor_amount;
       return Promise.resolve(session);
     },
     jwt: async (token, user, account, profile, isNewUser) => {
       const isSignIn = user ? true : false;
-
-      // Add github_id to token on signin in
-      if (isSignIn) token.github_node_id = profile.node_id;
+      if (isSignIn) {
+        const sponsorAmount = await sponsorPrice(user.github_node_id);
+        token.login = profile.login
+        token.github_node_id = profile.node_id;
+        token.sponsor_amount = sponsorAmount;
+      }
       return Promise.resolve(token);
     },
     secret: process.env.NEXTAUTH_SECRET,
