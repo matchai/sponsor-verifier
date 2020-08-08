@@ -1,8 +1,14 @@
-import airtable from "airtable";
+import Airtable, { Table, Record } from "airtable";
 import { getSession } from "next-auth/client";
 
-// Authenticate Airtable
+interface Row extends Airtable.FieldSet {
+  "GitHub ID": string;
+  "Mailing Address": string;
+}
+
+const airtable = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY });
 const base = airtable.base(process.env.AIRTABLE_BASE_ID);
+const table = base("Mailing Addresses") as Table<Row>;
 
 export default async (req, res) => {
   const {
@@ -11,7 +17,7 @@ export default async (req, res) => {
   } = req;
 
   const session = await getSession({ req });
-  const githubId = String(session.user.github_id);
+  const githubId: string = session.user.github_node_id;
 
   if (method === "GET") {
     const address = await getAddress(githubId);
@@ -25,21 +31,26 @@ export default async (req, res) => {
 
   if (method === "PUT") {
     await putAddress(githubId, address);
-    return res.status(200).json({ id: githubId });
+    if (address) {
+      return res.status(200).json({message: "Submitted"})
+    } else {
+      return res.status(200).json({message: "Address cleared"})
+    }
   }
 
   res.setHeader("Allow", ["GET", "PUT"]);
   return res.status(405).end(`Method ${method} Not Allowed`);
 };
 
-async function getRecord(githubId) {
-  const list = await base("Mailing Addresses").select().firstPage();
+async function getRecord(githubId): Promise<Record<Row> | undefined> {
+  const list = await table.select().firstPage();
   const record = list.find((record) => record.fields["GitHub ID"] === githubId);
-  return record || null;
+  return record;
 }
 
 async function getAddress(githubId) {
   const record = await getRecord(githubId);
+  if (!record) return;
   const address = record.fields["Mailing Address"];
   return address;
 }
@@ -47,8 +58,10 @@ async function getAddress(githubId) {
 async function putAddress(githubId, address) {
   const record = await getRecord(githubId);
   if (record) {
+    console.log(`Updating record: ${githubId}`);
     await updateRecord(record.id, address);
   } else {
+    console.log(`Creating record: ${githubId}`);
     await createRecord(githubId, address);
   }
 }

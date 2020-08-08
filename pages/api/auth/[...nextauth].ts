@@ -12,13 +12,14 @@ const options = {
   callbacks: {
     session: async (session, user) => {
       // Add github_id to session token
-      session.user.github_id = user.github_id;
+      session.user.github_node_id = user.github_node_id;
       return Promise.resolve(session);
     },
     jwt: async (token, user, account, profile, isNewUser) => {
       const isSignIn = user ? true : false;
+      
       // Add github_id to token on signin in
-      if (isSignIn) token.github_id = profile.id;
+      if (isSignIn) token.github_node_id = profile.node_id;
       return Promise.resolve(token);
     },
   },

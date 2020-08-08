@@ -14,10 +14,13 @@ function setAddress(address) {
   return fetch("/api/address", {
     method: "PUT",
     body: JSON.stringify({ address }),
+    headers: {
+      "Content-Type": "application/json"
+    }
   }).then((res) => {
-    if (!res.ok) throw new Error("Failed to submit ");
+    if (!res.ok) throw new Error("Failed to submit");
     return res;
-  });
+  }).then((res) => res.json())
 }
 
 export function useSetAddress() {

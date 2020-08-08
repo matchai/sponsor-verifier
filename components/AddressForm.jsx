@@ -10,7 +10,7 @@ import XCircle from "../svgs/x-circle.svg";
 export default function AddressForm() {
   const [session, loading] = useSession();
   const { data: address } = useAddress();
-  const [setAddress, { isLoading, isSuccess, isError }] = useSetAddress();
+  const [setAddress, { data, isLoading, isSuccess, isError }] = useSetAddress();
   const addressInput = useRef(null);
 
   async function handleSubmitAddress() {
@@ -94,7 +94,7 @@ United States"
           </button>
           {isSuccess && (
             <div className="notice ml-3 inline-flex items-center font-semibold text-green-500">
-              <CheckCircle className="mr-1 w-5 h-5 text-green-500" /> Submitted
+              <CheckCircle className="mr-1 w-5 h-5 text-green-500" /> {data.message}
             </div>
           )}
 
