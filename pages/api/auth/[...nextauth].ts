@@ -26,3 +26,13 @@ const options = {
 };
 
 export default (req, res) => NextAuth(req, res, options);
+
+enum SponsorState {
+  NotSponsor,
+  SponsorBelowTier,
+  SponsorMeetingTier
+}
+
+function isSponsor(user): SponsorState {
+
+}

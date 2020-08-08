@@ -30,11 +30,12 @@ export default async (req, res) => {
   }
 
   if (method === "PUT") {
-    await putAddress(githubId, address);
     if (address) {
-      return res.status(200).json({message: "Submitted"})
+      await putAddress(githubId, address);
+      return res.status(200).json({ message: "Submitted" });
     } else {
-      return res.status(200).json({message: "Address cleared"})
+      await deleteRecord(githubId)
+      return res.status(200).json({ message: "Address cleared" });
     }
   }
 
@@ -67,18 +68,14 @@ async function putAddress(githubId, address) {
 }
 
 async function createRecord(githubId, address) {
-  return base("Mailing Addresses").create([
-    {
-      fields: {
-        "GitHub ID": githubId,
-        "Mailing Address": address,
-      },
-    },
-  ]);
+  return table.create({
+    "GitHub ID": githubId,
+    "Mailing Address": address,
+  });
 }
 
 async function updateRecord(recordId, address) {
-  return base("Mailing Addresses").update([
+  return table.update([
     {
       id: recordId,
       fields: {
@@ -86,4 +83,9 @@ async function updateRecord(recordId, address) {
       },
     },
   ]);
+}
+
+async function deleteRecord(githubId) {
+  const record = await getRecord(githubId);
+  return table.destroy([record.id]);
 }
