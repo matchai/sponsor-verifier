@@ -72,7 +72,7 @@ export default function AddressForm() {
         <p className="leading-relaxed">
           It looks like your account is not sponsored at the tier to recieve fun
           stickers. <br />
-          You can increase your sponsorship level over on{" "}
+          You can increase your sponsorship tier over on{" "}
           <a
             className="font-semibold text-blue-600"
             href="https://github.com/sponsors/matchai/"
