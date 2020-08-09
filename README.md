@@ -5,6 +5,10 @@ This small site lets me verify that a GitHub is sponsoring me at the required ti
 
 You can check it out here: http://sponsor.matchai.dev/
 
+<p align="center">
+  <img width="300" src="demo.gif">
+</p>
+
 ---
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
