@@ -3,6 +3,8 @@
 
 This small site lets me verify that a GitHub is sponsoring me at the required tier to receive a sticker pack. If everything checks out, they are presented with a that they can use to share their mailing address with me.
 
+You can check it out here: http://sponsor.matchai.dev/
+
 ---
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
