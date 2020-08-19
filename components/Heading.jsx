@@ -26,7 +26,7 @@ export default function Heading() {
 
       <h1 className="text-3xl md:text-4xl">Thank you for sponsoring me!</h1>
       <p className="text-lg mt-6 mb-12 text-gray-600">
-        I am incredibly greatful for your support and would like to send you the
+        I am incredibly grateful for your support and would like to send you the
         occasional sticker pack for the projects I'm working on 💌
       </p>
     </div>
